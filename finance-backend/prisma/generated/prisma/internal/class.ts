@@ -12,7 +12,7 @@
  */
 
 import * as runtime from "@prisma/client/runtime/client"
-import type * as Prisma from "./prismaNamespace"
+import type * as Prisma from "./prismaNamespace.js"
 
 
 const config: runtime.GetPrismaClientConfig = {
@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.6.0",
   "engineVersion": "75cbdc1eb7150937890ad5465d861175c6624711",
   "activeProvider": "postgresql",
-  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id           String        @id @default(uuid())\n  email        String        @unique\n  password     String\n  isActive     Boolean       @default(true)\n  role         Role          @default(VIEWER)\n  createdAt    DateTime      @default(now())\n  Transactions Transaction[]\n}\n\nmodel Transaction {\n  id          String          @id\n  amount      Float\n  category    String\n  description String\n  type        TransactionType\n  date        DateTime\n  userId      String\n  createdAt   DateTime        @default(now())\n  User        User            @relation(fields: [userId], references: [id])\n}\n\nenum Role {\n  ADMIN\n  ANALYST\n  VIEWER\n}\n\nenum TransactionType {\n  INCOME\n  EXPENSE\n}\n",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id           String        @id @default(uuid())\n  email        String        @unique\n  password     String\n  isActive     Boolean       @default(true)\n  role         Role          @default(VIEWER)\n  createdAt    DateTime      @default(now())\n  Transactions Transaction[]\n}\n\nmodel Transaction {\n  id          String          @id\n  amount      Float\n  category    String\n  description String\n  type        TransactionType\n  date        DateTime        @default(now())\n  userId      String\n  createdAt   DateTime        @default(now())\n  User        User            @relation(fields: [userId], references: [id])\n}\n\nenum Role {\n  ADMIN\n  ANALYST\n  VIEWER\n}\n\nenum TransactionType {\n  INCOME\n  EXPENSE\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},

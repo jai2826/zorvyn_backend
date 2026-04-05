@@ -8,6 +8,33 @@ import {
 
 // ... (imports remain the same)
 
+type TransactionType = "INCOME" | "EXPENSE";
+
+type TypeAggregate = {
+  type: TransactionType;
+  _sum: { amount: number | null };
+};
+
+type CategoryAggregate = {
+  category: string | null;
+  type: TransactionType;
+  _sum: { amount: number | null };
+  _count: { category: number };
+};
+
+type UserTransaction = {
+  type: TransactionType;
+  amount: number;
+};
+
+type UserWithStats = {
+  id: string;
+  email: string;
+  role: string;
+  isActive: boolean;
+  Transactions: UserTransaction[];
+};
+
 export const analyticsRoutes = new Hono<{
   Variables: Variables;
 }>()
@@ -19,20 +46,20 @@ export const analyticsRoutes = new Hono<{
 
       try {
         // 1. Aggregation: Get Global Totals
-        const stats = await prisma.transaction.groupBy({
+        const stats: TypeAggregate[] = await prisma.transaction.groupBy({
           by: ["type"],
           
           _sum: { amount: true },
-        });
+        }) as TypeAggregate[];
 
         // 2. Aggregation: Get Category Breakdown
-        const categories = await prisma.transaction.groupBy(
+        const categories: CategoryAggregate[] = await prisma.transaction.groupBy(
           {
             by: ["category", "type"],
             _sum: { amount: true },
             _count: { category: true },
           },
-        );
+        ) as CategoryAggregate[];
 
         // 3. Logic: Create separate formatted lists
         const incomeCategories = categories
@@ -80,9 +107,9 @@ export const analyticsRoutes = new Hono<{
   )
   .get("/user/summary", authenticate, authorize(["ANALYST", "ADMIN"]), async (c) => {
   try {
-    const usersWithStats = await prisma.user.findMany({
+    const usersWithStats: UserWithStats[] = await prisma.user.findMany({
       include: { Transactions: true },
-    });
+    }) as UserWithStats[];
 
     const summary = usersWithStats.map((u) => {
       const totalIncome = u.Transactions

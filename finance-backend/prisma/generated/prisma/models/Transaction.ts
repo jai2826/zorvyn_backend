@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums"
-import type * as Prisma from "../internal/prismaNamespace"
+import type * as $Enums from "../enums.js"
+import type * as Prisma from "../internal/prismaNamespace.js"
 
 /**
  * Model Transaction
@@ -306,7 +306,7 @@ export type TransactionCreateInput = {
   category: string
   description: string
   type: $Enums.TransactionType
-  date: Date | string
+  date?: Date | string
   createdAt?: Date | string
   User: Prisma.UserCreateNestedOneWithoutTransactionsInput
 }
@@ -317,7 +317,7 @@ export type TransactionUncheckedCreateInput = {
   category: string
   description: string
   type: $Enums.TransactionType
-  date: Date | string
+  date?: Date | string
   userId: string
   createdAt?: Date | string
 }
@@ -350,7 +350,7 @@ export type TransactionCreateManyInput = {
   category: string
   description: string
   type: $Enums.TransactionType
-  date: Date | string
+  date?: Date | string
   userId: string
   createdAt?: Date | string
 }
@@ -487,7 +487,7 @@ export type TransactionCreateWithoutUserInput = {
   category: string
   description: string
   type: $Enums.TransactionType
-  date: Date | string
+  date?: Date | string
   createdAt?: Date | string
 }
 
@@ -497,7 +497,7 @@ export type TransactionUncheckedCreateWithoutUserInput = {
   category: string
   description: string
   type: $Enums.TransactionType
-  date: Date | string
+  date?: Date | string
   createdAt?: Date | string
 }
 
@@ -547,7 +547,7 @@ export type TransactionCreateManyUserInput = {
   category: string
   description: string
   type: $Enums.TransactionType
-  date: Date | string
+  date?: Date | string
   createdAt?: Date | string
 }
 

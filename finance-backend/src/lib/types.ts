@@ -1,7 +1,7 @@
-import type { User } from "../../prisma/generated/prisma/client";
+import type { User } from "../../prisma/generated/prisma/client.js";
 
 export type Variables = {
   user: User;
 };
 
-export type { User, Transaction, Role } from '../../prisma/generated/prisma/client'
+export type { User, Transaction } from '../../prisma/generated/prisma/client.js'

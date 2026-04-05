@@ -2,7 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
-import type { TransactionType } from "../../prisma/generated/prisma/client.js";
+import type { Transaction } from "../../prisma/generated/prisma/client.js";
 import { prisma } from "../lib/prisma.js";
 import type { Variables } from "../lib/types.js";
 import {
@@ -45,7 +45,7 @@ export const transactionRoutes = new Hono<{
                 : user.id,
             ...(category && { category }),
             ...(type
-              ? { type: type as TransactionType }
+              ? { type: type as Transaction }
               : {}),
           },
           orderBy: { createdAt: "desc" },

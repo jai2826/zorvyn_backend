@@ -1,9 +1,9 @@
 import { jwtDecode } from "jwt-decode";
-import { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom'; // Use the hook instead of window.location
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { User } from "../lib/api_types";
 
-// Define a proper interface instead of 'any'
+
 interface AuthContextType {
   token: string | null;
   user: User | null;
@@ -22,12 +22,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Use useCallback to prevent unnecessary re-renders or infinite loops
+  
   const logout = useCallback(() => {
-    localStorage.removeItem('token'); // Only remove what we own
+    localStorage.removeItem('token'); 
     setToken(null);
     setUser(null);
-    // Use React Router for navigation to stay within the SPA context
+    
     navigate('/login');
   }, [navigate]);
 
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           if (decoded.exp < currentTime) {
             logout();
           } else {
-            // Ensure we cast the decoded token to your User type
+            
             setUser(decoded as User);
           }
         } catch (error) {

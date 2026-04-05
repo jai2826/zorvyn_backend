@@ -1,21 +1,15 @@
 import { Hono } from "hono";
 import { prisma } from "../lib/prisma.js";
+import type { Variables } from "../lib/types.js";
 import {
   authenticate,
   authorize,
 } from "../middleware/auth.js";
-import type { Variables } from "../lib/types.js";
 
-// 1. You MUST include <{ Variables: Variables }> so 'c.get("user")' works.
 export const userRoutes = new Hono<{
   Variables: Variables;
 }>()
 
-
-
-
-
-  // 2. GET all users (Admin only)
   .get(
     "/all",
     authenticate,
@@ -40,52 +34,61 @@ export const userRoutes = new Hono<{
     },
   )
 
-  // 3. GET current user profile
-  .get("/:userId", authenticate, async (c) => {
-    const { userId } = c.req.param();
-    const currentUser = c.get("user");
+ .get("/:userId", authenticate, async (c) => {
+  const { userId } = c.req.param();
+  const currentUser = c.get("user");
+  
+  // 1. Grab the filters from the query string
+  const { category, type, date } = c.req.query();
 
-    // SECURITY: Prevent users from snooping on other profiles unless they are ADMIN
-    if (
-      currentUser.id !== userId &&
-      currentUser.role !== "ADMIN"
-    ) {
-      return c.json(
-        { error: "Unauthorized access to profile" },
-        403,
-      );
-    }
+  // Security Check
+  if (currentUser.id !== userId && currentUser.role !== "ADMIN") {
+    return c.json({ error: "Unauthorized access to profile" }, 403);
+  }
 
-    if (!userId) {
-      return c.json({ error: "User ID is required" }, 400);
-    }
+  if (!userId) {
+    return c.json({ error: "User ID is required" }, 400);
+  }
 
-    try {
-      const user = await prisma.user.findUnique({
-        where: { id: userId },
-        select: {
-          id: true,
-          email: true,
-          role: true,
-          isActive: true,
-          createdAt: true,
-          Transactions: {
-            take: 10, // PERFORMANCE: Don't dump the entire DB in one profile call
-            orderBy: { createdAt: "desc" },
+  // Parse transaction type for Prisma
+  const parsedType = (type === "INCOME" || type === "EXPENSE") ? type : undefined;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        isActive: true,
+        createdAt: true,
+        // 2. Apply the filters inside the Transactions relation
+        Transactions: {
+          where: {
+            ...(category && { 
+              category: { contains: category, mode: 'insensitive' } 
+            }),
+            ...(parsedType && { type: parsedType }),
+            ...(date && {
+              date: {
+                gte: new Date(`${date}T00:00:00.000Z`),
+                lte: new Date(`${date}T23:59:59.999Z`),
+              }
+            }),
           },
+          // Removed 'take: 10' so the user can see all filtered results
+          orderBy: { date: "desc" },
         },
-      });
+      },
+    });
 
-      if (!user) {
-        return c.json({ error: "User not found" }, 404);
-      }
-
-      return c.json(user);
-    } catch (e) {
-      console.error(e);
-      return c.json(
-        { error: "Internal Server Error" },
-        500,
-      );
+    if (!user) {
+      return c.json({ error: "User not found" }, 404);
     }
-  });
+
+    return c.json(user);
+  } catch (e) {
+    console.error("User Details Fetch Error:", e);
+    return c.json({ error: "Internal Server Error" }, 500);
+  }
+});

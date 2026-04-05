@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   useMutation,
   useQueryClient,
-} from "@tanstack/react-query"; // Added queryClient
+} from "@tanstack/react-query";
 import { XIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -56,7 +56,7 @@ export function CreateTransactionModal({
   Id?: string;
 }) {
   const { user: currentUser } = useAuth();
-  const queryClient = useQueryClient(); // Access the cache
+  const queryClient = useQueryClient(); 
 
   const {
     register,
@@ -75,7 +75,7 @@ export function CreateTransactionModal({
 
   const userId = Id ?? currentUser?.id;
 
-  // --- TANSTACK MUTATION ---
+  
   const { mutate, isPending } = useMutation({
     mutationFn: async (values: CreateTransactionSchema) => {
       return await api.post(
@@ -84,7 +84,7 @@ export function CreateTransactionModal({
       );
     },
     onSuccess: () => {
-      // 1. Break the cache for analytics and transaction lists
+      
       queryClient.invalidateQueries({
         queryKey: ["userAnalyticsSummary"],
       });
@@ -95,7 +95,7 @@ export function CreateTransactionModal({
         queryKey: ["userTransactions", userId],
       });
 
-      // 2. UI Feedback
+      
       toast.success("Transaction recorded!");
       reset();
       onClose();
@@ -115,7 +115,7 @@ export function CreateTransactionModal({
     mutate(values);
   };
 
-  // Ruthless Check: Security Guard
+  
   if (currentUser?.role === "VIEWER") {
     return (
       <Dialog

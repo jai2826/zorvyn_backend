@@ -31,14 +31,14 @@ import {
   TableRow,
 } from "../../../components/ui/table";
 import { useAuth } from "../../../context/AuthContext";
-// import type { User } from "@/../../../finance-backend/src/lib/types";
+
 
 export const UserTable = () => {
   const navigate = useNavigate();
   const { token, user: currentUser } = useAuth();
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  //   const [user, setUser] = useState<User>();
+  
     
   const [isDeleteModalOpen, setIsDeleteModalOpen] =
     useState(false);
@@ -51,7 +51,7 @@ export const UserTable = () => {
     setIsDeleteModalOpen(true);
   };
 
-  // 2. The actual API call
+  
   const confirmDelete = async () => {
     if (!userToDelete) return;
     setIsDeleting(true);
@@ -62,7 +62,7 @@ export const UserTable = () => {
       });
 
       toast.success("User permanently deleted");
-      // Update local state so the row disappears immediately
+      
       fetchUsers();
     } catch (err) {
       toast.error("Failed to delete user");
@@ -73,7 +73,7 @@ export const UserTable = () => {
     }
   };
 
-  // 1. Fetch all users (Admin Only Endpoint)
+  
   const fetchUsers = async () => {
     try {
       const res = await api.get("/admin/users", {
@@ -93,16 +93,16 @@ export const UserTable = () => {
     fetchUsers();
   }, [token]);
 
-  // 2. Handle Role Change
+  
   const handleDetailUpdate = async (
     userId: string,
     newRole?: string,
     isActive?: boolean,
   ) => {
-    // 1. Store the previous state in case we need to rollback on error
+    
     const previousUsers = [...users];
 
-    // 2. OPTIMISTIC UPDATE: Update the local UI state immediately
+    
     setUsers((prevUsers) =>
       prevUsers.map((u) =>
         u.id === userId
@@ -119,14 +119,14 @@ export const UserTable = () => {
     );
 
     try {
-      // 3. Fire the API call in the background
+      
       await api.patch(
         `/admin/update/${userId}`,
         { role: newRole, isActive },
         { headers: { Authorization: `Bearer ${token}` } },
       );
 
-      // Success toasts
+      
       if (newRole)
         toast.success(`User updated to ${newRole}`);
       else

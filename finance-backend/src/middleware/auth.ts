@@ -28,7 +28,7 @@ export const authenticate = async (c: Context, next: Next) => {
   }
 };
 
-// RBAC Wrapper: Uses the user set by authenticate
+
 export const authorize = (allowedRoles: string[]) => {
   return async (c: Context, next: Next) => {
     const user = c.get('user');

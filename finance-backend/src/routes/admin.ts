@@ -1,18 +1,18 @@
 import { Hono } from "hono";
 import { prisma } from "../lib/prisma.js";
+import type { Variables } from "../lib/types.js";
 import {
   authenticate,
   authorize,
 } from "../middleware/auth.js";
-import type { Variables } from "../lib/types.js";
 
-// We export the result of the chain directly.
-// This is what allows Hono RPC to "see" your routes on the frontend.
+
+
 export const adminRoutes = new Hono<{
   Variables: Variables;
 }>()
 
-  // 1. GET ALL USERS
+  
   .get(
     "/users",
     authenticate,
@@ -42,14 +42,14 @@ export const adminRoutes = new Hono<{
     },
   )
 
-  // 2. UPDATE USER STATUS OR ROLE
+  
   .patch(
     "/update/:userId",
     authenticate,
     authorize(["ADMIN"]),
     async (c) => {
       const { userId } = c.req.param();
-      // Added a type hint here for better safety
+      
       const { role, isActive } = await c.req.json<{
         role?: any;
         isActive?: boolean;
@@ -77,7 +77,7 @@ export const adminRoutes = new Hono<{
     },
   )
 
-  // 3. DELETE USER
+  
   .delete(
     "/user/:userId",
     authenticate,
@@ -103,7 +103,7 @@ export const adminRoutes = new Hono<{
     },
   )
 
-  // 4. SYSTEM-WIDE TRANSACTION OVERVIEW
+  
   .get(
     "/transactions/all",
     authenticate,
@@ -118,7 +118,7 @@ export const adminRoutes = new Hono<{
               },
             },
             orderBy: { date: "desc" },
-            take: 100, // Good safety limit
+            take: 100, 
           });
         return c.json(allTransactions);
       } catch (error) {

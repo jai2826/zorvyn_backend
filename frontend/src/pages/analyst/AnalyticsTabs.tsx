@@ -1,11 +1,11 @@
 import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
 } from "../../components/ui/tabs";
-// import { CompanyAnalytics } from "./components/CompanyAnalytics";
-// import { UserAnalytics } from "./components/UserAnalytics";
+
+
 import { Landmark, Users } from "lucide-react";
 import { CompanyAnalytics } from "./components/CompanyAnalytics";
 import { UserAnalytics } from "./components/UserAnalytics";

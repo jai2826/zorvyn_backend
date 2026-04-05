@@ -1,5 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { AlertTriangle, TrendingDown, TrendingUp, Users, UsersIcon } from "lucide-react";
+import {
+  AlertTriangle,
+  TrendingDown,
+  TrendingUp,
+  Users,
+  UsersIcon,
+} from "lucide-react";
 import api from "../../../api/axios";
 import { Badge } from "../../../components/ui/badge";
 import {
@@ -25,14 +31,13 @@ export const UserAnalytics = () => {
     isLoading,
     isError,
   } = useQuery<UserSummary>({
-    queryKey: ["userAnalyticsSummary"], // Unique key for caching and refetching
+    queryKey: ["userAnalyticsSummary"],
     queryFn: async () => {
       const res = await api.get(`/analytics/user/summary`);
       return res.data;
     },
   });
 
-  // CRITICAL FIX: Ensure 'data' is always an array to prevent .filter/.map crashes
   const data = Array.isArray(rawData) ? rawData : [];
   const totalTransactions = data.reduce(
     (acc, user) => acc + (user.transactionCount || 0),
@@ -56,13 +61,11 @@ export const UserAnalytics = () => {
     );
   }
 
-  // --- SAFE KPI CALCULATIONS ---
   const totalUsers = data.length;
   const activeUsers = data.filter(
     (u: any) => u.isActive,
   ).length;
 
-  // Guard against empty array for reduce
   const topSpender =
     data.length > 0
       ? data.reduce((prev: any, current: any) =>
@@ -79,9 +82,8 @@ export const UserAnalytics = () => {
 
   return (
     <div className="space-y-6">
-      {/* 🚀 USER KPI ROW */}
       <div className="grid gap-4 md:grid-cols-3">
-        <Card>
+        <Card className="border-l-4 border-l-blue-500">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Total Registered
@@ -94,20 +96,8 @@ export const UserAnalytics = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Top System Spender
-            </CardTitle>
-            <TrendingDown className="h-4 w-4 text-red-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-red-600">
-              {topSpender.email}
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
+
+        <Card className="border-l-4 border-l-emerald-500">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Active Adoption
@@ -120,12 +110,22 @@ export const UserAnalytics = () => {
             </div>
           </CardContent>
         </Card>
-        
-        
-        
+        <Card className="border-l-4 border-l-red-500">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Total System Spender
+            </CardTitle>
+            <TrendingDown className="h-4 w-4 text-red-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-red-600">
+              {topSpender.email}
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
-      {/* 👤 USER LEADERBOARD */}
+      {}
       <Card className="border-none shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between">
           <div>

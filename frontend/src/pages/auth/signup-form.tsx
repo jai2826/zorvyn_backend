@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../..
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 
-// 1. Enhanced Schema with Password Matching
+
 const signupSchema = z.object({
   email: z.email("Invalid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
@@ -32,7 +32,7 @@ export function SignupForm() {
 
   const onSubmit = async (values: SignupValues) => {
     try {
-      // We don't send confirmPassword to the backend
+      
       const { confirmPassword, ...submitData } = values;
 
       await api.post("/auth/register", submitData);
@@ -54,7 +54,7 @@ export function SignupForm() {
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
-          {/* Email */}
+          {}
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input id="email" type="email" {...register("email")} />
@@ -63,14 +63,14 @@ export function SignupForm() {
 
           
 
-          {/* Password */}
+          {}
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <Input id="password" type="password" {...register("password")} />
             {errors.password && <p className="text-xs text-destructive">{errors.password.message}</p>}
           </div>
 
-          {/* Confirm Password */}
+          {}
           <div className="space-y-2">
             <Label htmlFor="confirmPassword">Confirm Password</Label>
             <Input id="confirmPassword" type="password" {...register("confirmPassword")} />

@@ -10,7 +10,7 @@ export const ProtectedRoute = ({
 }) => {
   const { isAuthenticated, role, loading } = useAuth();
 
-  // 1. Wait for AuthContext to check localStorage before rendering
+  
   if (loading) {
     return (
       <div className="h-screen w-full flex items-center justify-center">
@@ -19,13 +19,13 @@ export const ProtectedRoute = ({
     );
   }
 
-  // 2. If not logged in, redirect to login
+  
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  // 3. If role is restricted, redirect to general dashboard
-  if (allowedRoles && !allowedRoles.includes(role)) {
+  
+  if (allowedRoles && !allowedRoles.includes(role!)) {
     return <Navigate to="/dashboard" replace />;
   }
 

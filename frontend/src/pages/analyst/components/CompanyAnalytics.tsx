@@ -1,7 +1,11 @@
 import api from "../../../api/axios";
 
 import { useQuery } from "@tanstack/react-query";
-import { DollarSign, TrendingDown, TrendingUp } from "lucide-react";
+import {
+  DollarSign,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-react";
 import {
   Card,
   CardContent,
@@ -20,9 +24,8 @@ import type { Summary } from "../../../lib/api_types";
 
 export const CompanyAnalytics = () => {
   const { data: stats, isLoading } = useQuery<Summary>({
-    queryKey: ["companyAnalyticsSummary"], // Unique key for caching and refetching
+    queryKey: ["companyAnalyticsSummary"],
     queryFn: async () => {
-      // Logic Fix: Ensure you pass userId to the backend to see THAT user's data
       const res = await api.get(`/analytics/summary`);
       return res.data;
     },
@@ -39,9 +42,8 @@ export const CompanyAnalytics = () => {
 
   return (
     <div className="space-y-6">
-      {/* 🚀 THE SCORECARD ROW */}
       <div className="grid gap-4 md:grid-cols-3">
-        <Card>
+        <Card className="border-l-4 border-l-blue-500">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Total Revenue
@@ -54,7 +56,21 @@ export const CompanyAnalytics = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
+
+        <Card className="border-l-4 border-l-emerald-500">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Net Profit
+            </CardTitle>
+            <TrendingUp className="h-4 w-4 text-emerald-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-emerald-500">
+              {`$ ${NetProfit.toLocaleString()}`}
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="border-l-4 border-l-red-500">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Total Burn
@@ -67,22 +83,6 @@ export const CompanyAnalytics = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Net Profit
-            </CardTitle>
-            <TrendingUp className="h-4 w-4 text-emerald-500" />
-            
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-emerald-500">
-              {`$ ${NetProfit.toLocaleString()}`}
-            </div>
-          </CardContent>
-        </Card>
-        
-        
       </div>
 
       <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-2">

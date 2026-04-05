@@ -10,7 +10,7 @@ import {
   authorize,
 } from "../middleware/auth.js";
 
-// Validation schema
+
 const createSchema = z.object({
   amount: z
     .number()
@@ -24,36 +24,55 @@ const createSchema = z.object({
   description: z.string().max(255).optional(),
 });
 
-// --- CHAINED ROUTES ---
-// We assign the chain to the export so the frontend can "see" every method.
+
+
 export const transactionRoutes = new Hono<{
   Variables: Variables;
 }>()
-  // 1. GET ALL
+  
   .get("/", authenticate, async (c) => {
     const user = c.get("user");
-    const { category, type, userId } = c.req.query();
+    
+    const { category, type, userId, date } = c.req.query();
 
     const parsedType: TransactionType | undefined =
       type === "INCOME" || type === "EXPENSE"
-        ? type
+        ? (type as TransactionType)
         : undefined;
 
     try {
       const transactions =
         await prisma.transaction.findMany({
           where: {
-            // Logic: Admins can filter by userId, regular users are locked to their own ID
+            
+            
             userId:
               user.role === "ADMIN"
-                ? (userId ?? user.id)
+                ? userId || user.id
                 : user.id,
-            ...(category && { category }),
-            ...(parsedType
-              ? { type: parsedType }
-              : {}),
+
+            
+            
+            ...(category && {
+              category: {
+                contains: category,
+                mode: "insensitive",
+              },
+            }),
+
+            
+            ...(parsedType && { type: parsedType }),
+
+            
+            
+            ...(date && {
+              date: {
+                gte: new Date(`${date}T00:00:00.000Z`),
+                lte: new Date(`${date}T23:59:59.999Z`),
+              },
+            }),
           },
-          orderBy: { createdAt: "desc" },
+          orderBy: { date: "desc" }, 
           include: {
             User: {
               select: { id: true, role: true, email: true },
@@ -71,7 +90,7 @@ export const transactionRoutes = new Hono<{
     }
   })
 
-  // 2. CREATE (Admin Only)
+  
   .post(
     "/create/:userId",
     authenticate,
@@ -119,7 +138,7 @@ export const transactionRoutes = new Hono<{
     },
   )
 
-  // 3. UPDATE (Admin Only)
+  
   .patch(
     "/:id",
     authenticate,
@@ -153,7 +172,7 @@ export const transactionRoutes = new Hono<{
     },
   )
 
-  // 4. DELETE (Admin Only)
+  
   .delete(
     "delete/:id",
     authenticate,

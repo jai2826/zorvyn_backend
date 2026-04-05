@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query"; // Import Mutation
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -33,17 +33,17 @@ export function LoginForm() {
     resolver: zodResolver(authSchema),
   });
 
-  // --- TANSTACK MUTATION ---
+  
   const { mutate, isPending } = useMutation({
     mutationFn: async (values: AuthValues) => {
       const res = await api.post("/auth/login", values);
       return res.data;
     },
     onSuccess: (data:LoginResponse) => {
-      // 1. Update Auth Context
+      
       login(data.token);
       
-      // 2. Feedback & Navigation
+      
       toast.success("Logged in successfully!");
       navigate("/dashboard");
     },
@@ -56,7 +56,7 @@ export function LoginForm() {
   });
 
   const onSubmit = (values: AuthValues) => {
-    mutate(values); // Trigger the mutation
+    mutate(values); 
   };
 
   return (

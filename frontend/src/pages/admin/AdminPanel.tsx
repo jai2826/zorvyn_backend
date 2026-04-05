@@ -1,13 +1,13 @@
 import { ShieldAlert } from "lucide-react";
 import { Route, Routes } from "react-router-dom";
-import { UserTable } from "./components/UserTable";
 import { UserDetailsPage } from "./components/UserDetailsPage";
-// import { UserDetails } from "./UserDetails";
+import { UserTable } from "./components/UserTable";
+
 
 export function AdminPanel() {
   return (
     <div className="space-y-6">
-      {/* 🛡️ Header stays visible for all sub-routes */}
+      {}
       <div className="flex items-center gap-4">
         <div className="p-3 bg-primary/10 rounded-lg">
           <ShieldAlert className="w-8 h-8 text-primary" />
@@ -23,13 +23,13 @@ export function AdminPanel() {
       </div>
 
       <Routes>
-        {/* Matches exactly /admin */}
+        {}
         <Route
           index
           element={<UserTable />}
         />
 
-        {/* Matches /admin/user/:userId */}
+        {}
         <Route
           path="user/:userId"
           element={<UserDetailsPage />}

@@ -6,7 +6,7 @@ import {
   authorize,
 } from "../middleware/auth.js";
 
-// ... (imports remain the same)
+
 
 export const analyticsRoutes = new Hono<{
   Variables: Variables;
@@ -18,14 +18,14 @@ export const analyticsRoutes = new Hono<{
     async (c) => {
 
       try {
-        // 1. Aggregation: Get Global Totals
+        
         const stats = await prisma.transaction.groupBy({
           by: ["type"],
           
           _sum: { amount: true },
         });
 
-        // 2. Aggregation: Get Category Breakdown
+        
         const categories = await prisma.transaction.groupBy(
           {
             by: ["category", "type"],
@@ -34,7 +34,7 @@ export const analyticsRoutes = new Hono<{
           },
         );
 
-        // 3. Logic: Create separate formatted lists
+        
         const incomeCategories = categories
           .filter((cat) => cat.type === "INCOME")
           .map((cat) => ({
@@ -51,7 +51,7 @@ export const analyticsRoutes = new Hono<{
             amount: Number(cat._sum.amount || 0),
           }));
 
-        // Calculate Totals
+        
         const totalIncome = Number(
           stats.find((s) => s.type === "INCOME")?._sum
             .amount || 0,
@@ -65,7 +65,7 @@ export const analyticsRoutes = new Hono<{
           totalIncome,
           totalExpense,
           netBalance: totalIncome - totalExpense,
-          // Now your frontend can map directly to specific charts
+          
           incomeByCategories: incomeCategories,
           expenseByCategories: expenseCategories,
         });
@@ -97,11 +97,11 @@ export const analyticsRoutes = new Hono<{
         email: u.email,
         role: u.role,
         isActive: u.isActive,
-        transactionCount: u.Transactions.length, // Matching frontend
-        totalIncome: totalIncome,             // Matching frontend
-        totalExpense: totalExpense,             // Matching frontend
-        netBalance: totalIncome - totalExpense, // Matching frontend
-        isRisk: (totalIncome - totalExpense) < 0, // Risk if balance < 0
+        transactionCount: u.Transactions.length, 
+        totalIncome: totalIncome,             
+        totalExpense: totalExpense,             
+        netBalance: totalIncome - totalExpense, 
+        isRisk: (totalIncome - totalExpense) < 0, 
       };
     });
 

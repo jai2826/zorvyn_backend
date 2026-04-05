@@ -12,7 +12,7 @@ export default defineConfig({
   },
   server: {
     watch: {
-      usePolling: true, // This forces Vite to check files every X milliseconds
+      usePolling: true, 
     },
   },
 });

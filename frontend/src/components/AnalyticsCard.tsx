@@ -1,11 +1,10 @@
+import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import {
   Card,
-  CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "../components/ui/card";
-import { cn } from "../../src/lib/utils";
-import { FaCaretDown, FaCaretUp } from "react-icons/fa";
+import { DollarSign } from "lucide-react";
 
 interface AnalyticsCardProps {
   title: string;
@@ -26,29 +25,18 @@ export const AnalyticsCard = ({
   const Icon = variant === "up" ? FaCaretUp : FaCaretDown;
 
   return (
-    <Card className="shadow-none border-none w-full">
-      <CardHeader>
-        <div className=" flex items-center gap-x-2.5">
-          <CardDescription className="flex items-center gap-x-2 font-medium overflow-hidden">
-            <span className="truncate text-base">
-              {title}
-            </span>
-          </CardDescription>
-          <div className="flex items-center gap-x-1 ">
-            <Icon className={cn(iconColor, "size-4")} />
-            <span
-              className={cn(
-                increaseValueColor,
-                "truncate text-base font-medium",
-              )}>
-              {increaseValue}
-            </span>
-          </div>
-        </div>
-        <CardTitle className="font-semibold truncate">
-          {value}
+    <Card className="border-l-4 border-l-blue-500">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">
+          Net Balance
         </CardTitle>
+        <DollarSign className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">
+          ${balance.toLocaleString()}
+        </div>
+      </CardContent>
     </Card>
   );
 };

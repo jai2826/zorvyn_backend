@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client"
+  output   = "generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id              String            @id @default(uuid())
+  email           String            @unique
+  password        String
+  isActive        Boolean           @default(true)
+  role            Role              @default(VIEWER)
+  createdAt       DateTime          @default(now())
+  Transactions    Transaction[]
+}
+
+model Transaction {
+  id          String          @id
+  amount      Float
+  category    String
+  description String
+  type        TransactionType
+  date        DateTime        @default(now())
+  userId      String
+  createdAt   DateTime        @default(now())
+  User        User            @relation(fields: [userId], references: [id])
+}
+
+enum Role {
+  ADMIN
+  ANALYST
+  VIEWER
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}

@@ -121,13 +121,13 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <Router>
+    <Router>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
           <AppRoutes />
           <Toaster />
-        </Router>
-      </QueryClientProvider>
-    </AuthProvider>
+        </QueryClientProvider>
+      </AuthProvider>
+    </Router>
   );
 }

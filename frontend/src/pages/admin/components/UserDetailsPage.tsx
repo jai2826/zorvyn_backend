@@ -138,9 +138,13 @@ export const UserDetailsPage = () => {
         <div className="flex justify-between items-center">
           <div>
             <h2 className="text-3xl flex flex-row gap-1 items-center font-bold tracking-tight">
-              <ArrowLeftIcon onClick={()=>{
-                navigate("/admin")
-              }} size={24} className="border-black rounded-md border-2 cursor-pointer"/>
+              <ArrowLeftIcon
+                onClick={() => {
+                  navigate("/admin");
+                }}
+                size={24}
+                className="border-black rounded-md border-2 cursor-pointer"
+              />
               Overview
             </h2>
             <p className="text-muted-foreground">
@@ -258,7 +262,7 @@ export const UserDetailsPage = () => {
                         size="sm"
                         className="text-destructive hover:bg-destructive/10 self-center"
                         disabled={
-                          user.role === "ADMIN"
+                          user?.role === "ADMIN"
                             ? false
                             : true
                         }

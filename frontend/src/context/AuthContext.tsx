@@ -58,8 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = (newToken: string) => {
     localStorage.setItem('token', newToken);
     setToken(newToken);
-    // Navigating to dashboard happens in the LoginForm onSuccess usually, 
-    // but the token update triggers the useEffect above.
+    
   };
 
   return (

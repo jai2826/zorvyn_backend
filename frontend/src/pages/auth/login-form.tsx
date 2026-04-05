@@ -41,7 +41,7 @@ export function LoginForm() {
     },
     onSuccess: (data:LoginResponse) => {
       // 1. Update Auth Context
-      login(data.token, data.user.role);
+      login(data.token);
       
       // 2. Feedback & Navigation
       toast.success("Logged in successfully!");

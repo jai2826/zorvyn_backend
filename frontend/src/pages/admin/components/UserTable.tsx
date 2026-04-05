@@ -215,7 +215,7 @@ export const UserTable = () => {
                         defaultValue={user.role}
                         disabled={
                           user.role === "ADMIN" ||
-                          user.id === currentUser.userId
+                          user.id === currentUser?.id
                         }
                         onValueChange={(newRole) =>
                           handleDetailUpdate(
@@ -244,7 +244,7 @@ export const UserTable = () => {
                         checked={user.isActive}
                         disabled={
                           user.role === "ADMIN" ||
-                          user.id === currentUser.userId
+                          user.id === currentUser?.id
                         }
                         onCheckedChange={(checked) =>
                           handleDetailUpdate(
@@ -260,7 +260,7 @@ export const UserTable = () => {
                         className="text-destructive hover:bg-destructive/10 self-center"
                         disabled={
                           user.role === "ADMIN" ||
-                          user.id === currentUser.userId
+                          user.id === currentUser?.id
                         }
                         onClick={() =>
                           openDeleteConfirm(user)

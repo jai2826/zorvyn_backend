@@ -73,5 +73,32 @@ I created a **Privilege Ladder** to keep things organized:
 | Variables | Value | 
 | :--- | :--- |
 | DATABASE_URL | postgres://**************xaW@db.prisma.io:5432/postgres?sslmode=require |
-| JWT_SECRET | my_jwt_secret_key |
+| JWT_SECRET | your_custom_secret |
+
+
+
+
+
+## Demo
+
+The Project is live here: https://zorvyn-backend-wntt.vercel.app
+
+
+
+
+## Usage/Examples
+
+Use the below given credentials
+
+password for all : test123@
+
+| email | role |
+| :--- | :--- |
+|admin@gmail.com|ADMIN|
+|test@gmail.com|ANALYST|
+|test123@gmail.com|ANALYST|
+|test12345@gmail.com|VIEWER|
+|dummy@gmail.com|VIEWER|
+|dummy123@gmail.com|ANALYST|
+|dummy123852@gmail.com|ADMIN|
 

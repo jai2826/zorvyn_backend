@@ -7,9 +7,13 @@
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "esnext",
+    
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "dist",
+  
     "target": "esnext",
-    "moduleResolution": "bundler",
+    
     "types": [],
     // For nodejs:
     // "lib": ["esnext"],

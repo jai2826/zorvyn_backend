@@ -1,10 +1,10 @@
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
-import { authRoutes } from "./routes/auth";
-import { transactionRoutes } from "./routes/transactions";
-import { userRoutes } from "./routes/user";
-import { analyticsRoutes } from "./routes/analytics";
-import { adminRoutes } from "./routes/admin";
+import { authRoutes } from "./routes/auth.js";
+import { transactionRoutes } from "./routes/transactions.js";
+import { userRoutes } from "./routes/user.js";
+import { analyticsRoutes } from "./routes/analytics.js";
+import { adminRoutes } from "./routes/admin.js";
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 

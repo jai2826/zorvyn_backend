@@ -52,7 +52,6 @@ export function Dashboard() {
       <CreateTransactionModal
         isOpen={isTransactionModalOpen}
         onClose={() => setIsTransactionModalOpen(false)}
-        onSuccess={() => fetchData()}
       />
       <div className="space-y-8 px-0 mx-0">
         {/* Header Section */}

@@ -2,7 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
-import type { Transaction } from "../../prisma/generated/prisma/client.js";
+import type { TransactionType } from "../../prisma/generated/prisma/client.js";
 import { prisma } from "../lib/prisma.js";
 import type { Variables } from "../lib/types.js";
 import {
@@ -34,6 +34,11 @@ export const transactionRoutes = new Hono<{
     const user = c.get("user");
     const { category, type, userId } = c.req.query();
 
+    const parsedType: TransactionType | undefined =
+      type === "INCOME" || type === "EXPENSE"
+        ? type
+        : undefined;
+
     try {
       const transactions =
         await prisma.transaction.findMany({
@@ -44,8 +49,8 @@ export const transactionRoutes = new Hono<{
                 ? (userId ?? user.id)
                 : user.id,
             ...(category && { category }),
-            ...(type
-              ? { type: type as Transaction }
+            ...(parsedType
+              ? { type: parsedType }
               : {}),
           },
           orderBy: { createdAt: "desc" },
